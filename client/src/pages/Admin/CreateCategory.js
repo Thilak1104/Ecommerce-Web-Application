@@ -56,14 +56,14 @@ const CreateCategory = () => {
         `/api/v1/category/update-category/${selected._id}`,
         { name: updatedName }
       );
-      if (data.success) {
+      if (data?.success) {
         toast.success(`${updatedName} is updated`);
         setSelected(null);
         setUpdatedName("");
         setVisible(false);
         getAllCategory();
       } else {
-        toast.error(data.message);
+        toast.error(data?.message);
       }
     } catch (error) {
       toast.error("Somtihing went wrong");
@@ -75,7 +75,7 @@ const CreateCategory = () => {
       const { data } = await axios.delete(
         `/api/v1/category/delete-category/${pId}`
       );
-      if (data.success) {
+      if (data?.success) {
         toast.success(`category is deleted`);
 
         getAllCategory();
