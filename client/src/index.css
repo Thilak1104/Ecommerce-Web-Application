@@ -102,3 +102,8 @@
   padding: 0;
   height: 100vh;
 }
+
+.product-link{
+  text-decoration: none !important;
+  color: black !important;
+}

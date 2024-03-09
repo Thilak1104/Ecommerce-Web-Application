@@ -74,7 +74,7 @@ export const getProductController = async (req, res) => {
 
 export const getSingleProductController = async (req, res) => {
   try {
-    const products = await productModel
+    const product = await productModel
       .find({ slug: req.params.slug })
       .populate("category")
       .select("-photo")
@@ -83,8 +83,7 @@ export const getSingleProductController = async (req, res) => {
     res.status(200).send({
       success: true,
       message: "Successfully Fetched the single product",
-      Totalcount: products.length,
-      products,
+      product,
     });
   } catch (error) {
     console.log(error);
@@ -98,13 +97,14 @@ export const getSingleProductController = async (req, res) => {
 
 export const productPhotoController = async (req, res) => {
   try {
+    console.log(req.param.pid)
     const product = await productModel.findById(req.params.pid).select("photo");
     if (product.photo.data) {
       res.set("Content-Type", product.photo.contentType);
       res.status(200).send(product.photo.data);
     }
   } catch (error) {
-    console.log(error);
+    console.log("photo not getting ",error);
     res.status(500).send({
       success: false,
       message: "Error in getting the photo of  product",
@@ -115,18 +115,17 @@ export const productPhotoController = async (req, res) => {
 
 export const deleteProductController = async (req, res) => {
     try {
-      const product = await productModel.findByIdAndDelete(req.params.pid).select("-photo");
+       await productModel.findByIdAndDelete(req.params.pid).select("-photo");
       res.status(200).send({
         success: true,
-        message: "Successfully deleted the product",
-        product
+        message: "Successfully deleted the product"
       })
     } catch (error) {
       console.log(error);
       res.status(500).send({
         success: false,
         message: "Error in deleting the product",
-        error: error,
+        error,
       });
     }
   };

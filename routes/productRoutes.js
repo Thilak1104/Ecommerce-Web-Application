@@ -11,7 +11,7 @@ router.post('/create-product',requireSignIn,isAdmin,formidable(),createProductCo
 //getproduct route
 router.get('/get-product',getProductController);
 
-//getproduct route
+//get single product route
 router.get('/get-product/:slug',getSingleProductController);
 
 //get photo rouete
