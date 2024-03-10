@@ -6,7 +6,7 @@ import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
-
+axios.defaults.baseURL = "http://localhost:8080";
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
@@ -19,7 +19,7 @@ const UpdateProduct = () => {
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
-  const [id,setId] = useState("")
+  const [id, setId] = useState("");
   //get single product
   const getSingleProduct = async () => {
     try {
@@ -27,7 +27,7 @@ const UpdateProduct = () => {
         `/api/v1/product/get-product/${params.slug}`
       );
       setName(data.product[0].name);
-      setId(data.product[0]._id)
+      setId(data.product[0]._id);
       setDescription(data.product[0].description);
       setPrice(data.product[0].price);
       setQuantity(data.product[0].quantity);
@@ -89,18 +89,20 @@ const UpdateProduct = () => {
   };
 
   //delete product
-  const handleDelete = async()=> {
+  const handleDelete = async () => {
     try {
-        let answer = window.prompt('Are you sure want to delete this product?')
-        if(!answer) return;
-        const {data} = await axios.delete('/api/v1/product/delete-product/${id}')
-        toast.success('Product deleted successfully')
-        navigate('/dashboard/admin/products')
+      let answer = window.prompt("Are you sure want to delete this product?");
+      if (!answer) return;
+      const { data } = await axios.delete(
+        `/api/v1/product/delete-product/${id}`
+      );
+      toast.success("Product deleted successfully");
+      navigate("/dashboard/admin/products");
     } catch (error) {
-        console.log(error);
-        toast.error('Something went wrong')
+      console.log(error);
+      toast.error("Something went wrong");
     }
-  }
+  };
   return (
     <Layout>
       <div className="container-fluid m-3 p-3">
@@ -119,7 +121,8 @@ const UpdateProduct = () => {
                 className="form-select mb-3"
                 onChange={(value) => {
                   setCategory(value);
-                }} value={category}
+                }}
+                value={category}
               >
                 {categories?.map((c) => (
                   <Option key={c._id} value={c._id}>
@@ -149,9 +152,10 @@ const UpdateProduct = () => {
                       className="img img-responsive"
                     />
                   </div>
-                ): (
-                    <div className="text-center">
-                    <img src={`/api/v1/product/product-photo/${id}`}
+                ) : (
+                  <div className="text-center">
+                    <img
+                      src={`/api/v1/product/product-photo/${id}`}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"
@@ -205,7 +209,8 @@ const UpdateProduct = () => {
                   className="form-select mb-3"
                   onChange={(value) => {
                     setShipping(value);
-                  }} value ={shipping ? "yes": "No"}
+                  }}
+                  value={shipping ? "yes" : "No"}
                 >
                   <Option value="0">No</Option>
                   <Option value="1">Yes</Option>
@@ -219,7 +224,6 @@ const UpdateProduct = () => {
                 >
                   UPDATE PRODUCT
                 </button>
-                
               </div>
               <div className="mb-3">
                 <button
@@ -229,7 +233,6 @@ const UpdateProduct = () => {
                 >
                   DELETE PRODUCT
                 </button>
-                
               </div>
             </div>
           </div>
