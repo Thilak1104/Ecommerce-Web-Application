@@ -1,5 +1,6 @@
 import fs from "fs";
 import productModel from "../models/productModel.js";
+import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
 export const createProductController = async (req, res) => {
   try {
@@ -260,38 +261,61 @@ export const searchProductController = async (req, res) => {
         ],
       })
       .select("-photo");
-      res.json(results)
+    res.json(results);
   } catch (error) {
     console.log(error);
     res.status(400).send({
       success: false,
       message: " error in searching the product ",
-      error
-    })
+      error,
+    });
   }
 };
 
-
-export const relatedProductController = async(req,res) => {
+export const relatedProductController = async (req, res) => {
   try {
-    const {pid,cid} = req.params;
-    const products = await productModel.find({
-      category: cid,
-      _id: { $ne : pid},
-    })
-    .select("-photo")
-    .limit(3)
-    .populate("category");
+    const { pid, cid } = req.params;
+    const products = await productModel
+      .find({
+        category: cid,
+        _id: { $ne: pid },
+      })
+      .select("-photo")
+      .limit(3)
+      .populate("category");
     res.status(200).send({
       success: true,
-      products
-    }); 
+      products,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({
       success: false,
       message: "Something went wrong in the related products",
-      error
-    })
+      error,
+    });
   }
-}
+};
+
+// category-wise products
+
+export const productCategoryController = async (req, res) => {
+  try {
+    console.log(req.param)
+    const category = await categoryModel.findOne({ slug: req.params.slug });
+    const products = await productModel.find({ category }).populate("category");
+    res.status(200).send({
+      success: true,
+      message: "Successfully fetched the data with category",
+      category,
+      products,
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while getting product category wise",
+      error,
+    });
+  }
+};

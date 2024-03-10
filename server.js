@@ -17,7 +17,7 @@ connectDB();
 const app = express();
 
 //middlewares
-app.use(cors({ origin: "*" })); // including the other domain that can call the api directly
+app.use(cors()); // including the other domain that can call the api directly
 app.use(express.json());
 app.use(morgan("dev"));
 
