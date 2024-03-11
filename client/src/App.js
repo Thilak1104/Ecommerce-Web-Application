@@ -25,13 +25,12 @@ import CategoryProduct from "./pages/CategoryProduct";
 import CartPage from "./pages/CartPage";
 
 function App() {
-  console.log(process.env.REACT_APP_API)
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/product/:slug" element={<ProductDetails />} />
       <Route path="/categories" element={<Categories />} />
-      <Route path="/cart" element={<CartPage/>} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path="/category/:slug" element={<CategoryProduct />} />
       <Route path="/search" element={<Search />} />
       <Route path="/about" element={<About />} />

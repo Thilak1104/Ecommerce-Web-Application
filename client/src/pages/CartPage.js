@@ -56,8 +56,8 @@ const CartPage = () => {
         <div className="row">
           <div className="col-md-8">
             {cart?.map((p) => (
-              <div className="row mb-2 p-3 card flex-row">
-                <div className="col-md-4">
+              <div className="row mb-2 p-3 card flex-row "  key={p._id}>
+                <div className="col-md-4 ">
                   <img
                     src={`/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top"
@@ -80,6 +80,23 @@ const CartPage = () => {
             <p>Total | Checkout | Payment</p>
             <hr />
             <h4>Total : {totalPrice()} </h4>
+            {auth?.user?.address ? (
+              <> 
+              <div className="mb-3">
+                <h4>Current Address</h4>
+                <h5> {auth?.user?.address}</h5>
+                <button className="btn btn-outline-warning" onClick={()=>navigate('/dashboard/user/profile')}>Update Address</button>
+              </div>
+              </>
+            ):(
+              <div className="mb-3">
+                {auth?.token ?(
+                  <button className="btn btn-outline-warning" onClick={()=>navigate('/dashboard/user/profile')}>Update Address</button>
+                ):(
+                  <button className="btn btn-outline-warning" onClick={()=>navigate('/login',{state: "/cart"})}>Please login to checkout</button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
