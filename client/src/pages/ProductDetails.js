@@ -17,11 +17,14 @@ const ProductDetails = () => {
 
   const getProduct = async () => {
     try {
+      console.log(params);
+
       const { data } = await axios.get(
         `${BASE_API_URL}/api/v1/product/get-product/${params.slug}`
       );
-      setProduct(data?.product[0]);
-      getSimilarProduct(data?.product[0]._id, data?.product[0].category._id);
+      console.log(data.product)
+      setProduct(data?.product);
+      getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
       console.log(error);
     }

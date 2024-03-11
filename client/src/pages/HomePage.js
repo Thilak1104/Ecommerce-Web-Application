@@ -10,7 +10,7 @@ axios.defaults.baseURL = "http://localhost:8080";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [cart,setCart] = useCart([]);
+  const [cart, setCart] = useCart([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -41,6 +41,7 @@ const HomePage = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+     
       setLoading(false);
       setProducts(data.products);
     } catch (error) {
@@ -69,6 +70,7 @@ const HomePage = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+
       setLoading(false);
       setProducts([...products, ...data?.products]);
     } catch (error) {
@@ -148,8 +150,9 @@ const HomePage = () => {
           <div className="d-flex flex-wrap ">
             {products?.map((p) => (
               <div key={p._id} className="card m-2 style={{width: 18rem}} ">
+                {/* {p._id} */}
                 <img
-                  src={`/api/v1/product/product-photo/${p._id}`}
+                  src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
                   alt={p.name}
                 />
@@ -164,9 +167,18 @@ const HomePage = () => {
                   >
                     More Details
                   </button>
-                  <button type="btn" className="btn btn-secondary ms-1" onClick={() =>{setCart([...cart,p]);
-                  localStorage.setItem("cart",JSON.stringify([...cart,p]));
-                  toast.success("Item Added to cart successfully")}}>
+                  <button
+                    type="btn"
+                    className="btn btn-secondary ms-1"
+                    onClick={() => {
+                      setCart([...cart, p]);
+                      localStorage.setItem(
+                        "cart",
+                        JSON.stringify([...cart, p])
+                      );
+                      toast.success("Item Added to cart successfully");
+                    }}
+                  >
                     Add to Cart
                   </button>
                 </div>
